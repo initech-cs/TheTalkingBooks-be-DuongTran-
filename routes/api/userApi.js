@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { getUserList, createUser } = require("../../controllers/userControllers")
+const { getUserList, createUser, updateUser, login } = require("../../controllers/userControllers")
 
 /* GET users listing. */
 // router.get("/", function (req, res, next) {
@@ -10,6 +10,13 @@ const { getUserList, createUser } = require("../../controllers/userControllers")
 router.route("/users")
   .get(getUserList)
   .post(createUser)
+
+
+
+router.route("users/:id").put(updateUser)
+
+router.route("/login").post(login)
+
 
 //router.route("/login/Facebook").post(loginWithFacebook);
 

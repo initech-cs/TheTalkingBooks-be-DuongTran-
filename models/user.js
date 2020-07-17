@@ -10,12 +10,20 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Email is required"],
         trim: true,
+        unique: true
     },
 
     password: {
         type: String,
         required: [true, "Password is required"]
-    }
+    },
+    role: {
+        type: String,
+        enum: ["host", "normal"],
+        required: [true, "Role is required"]
+    },
+    tokens: [{ type: String }]
+
 
 });
 

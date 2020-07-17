@@ -1,4 +1,5 @@
 const User = require("./../models/user")
+const { generateToken } = require("./../services/authenticationService")
 
 exports.getUserList = async (req, res) => {
     const users = await User.find();
@@ -9,8 +10,8 @@ exports.getUserList = async (req, res) => {
 }
 
 exports.createUser = async (req, res) => {
-    const { name, email, password } = req.body
-    if (!name || !email || !password) {
+    const { name, email, password, role } = req.body
+    if (!name || !email || !password || !role) {
         return res.status(400).json({
             status: "fail",
             message: "Missing info"
@@ -19,12 +20,25 @@ exports.createUser = async (req, res) => {
     const newUser = await User.create({
         name: name,
         email: email,
-        password: password
+        password: password,
+        role: role
     })
     res.status(200).json({
         status: "ok",
         data: newUser,
     })
+}
+
+exports.updateUser = async (req, res) => {
+    const { name, email, password, role } = req.body
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({
+            status: "fail",
+            message: "Missing info"
+        })
+    }
+
+    const newUser = await User.find({})
 }
 
 
@@ -53,3 +67,46 @@ exports.logInWithFacebook = async (request, response) => {
         console.log(error);
     };
 };
+
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        if (!email || !password) throw new Error("email and password is required")
+        const user = await User.findOne({ email: email })
+        console.log(user)
+        const token = await generateToken(user)
+
+        if (user.password = password) {
+            return res.status(200).json({
+                status: "success",
+                message: "password is right",
+                data: { user, token }
+            })
+        }
+
+    } catch (error) {
+        res.status(400).json({
+            message: error.message
+        })
+    }
+}
+
+
+exports.logout = async (req, res) => {
+    const token = res.body.tokens
+    if (!token) {
+        return res.status(400).json({
+            message: error.message
+        })
+    }
+
+    const user = await User.findOne({ tokens: token })
+    if (user) {
+        user.tokens = user.tokens.filter(token => token != token)
+        await user.save()
+    }
+
+    res.status(200).json({
+
+    })
+}
