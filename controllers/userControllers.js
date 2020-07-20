@@ -21,14 +21,17 @@ exports.createUser = async (req, res) => {
     name: name,
     email: email,
     password: password,
-    role: role,
+    role,
   });
 
   //const token = await generateToken(newUser);
-  res.status(200).json({
+  res.status(201).json({
     status: "ok",
     data: newUser,
   });
+};
+exports.getMe = (req, res) => {
+  return res.json(req.user);
 };
 
 exports.updateUser = async (req, res) => {
@@ -73,18 +76,18 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) throw new Error("email and password is required");
-    const user = await User.findOne({ email: email });
-    console.log(user);
-    const token = await generateToken(user);
+    const user = await User.loginWithEmail(email, password);
 
-    if ((user.password = password)) {
-      return res.status(200).json({
-        status: "success",
-        message: "password is right",
-        data: { user, token },
-      });
-    }
+    const token = await generateToken(user);
+    console.log(user);
+
+    return res.status(200).json({
+      status: "success",
+      message: "password is right",
+      data: { user, token },
+    });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       message: error.message,
     });

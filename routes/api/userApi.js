@@ -5,8 +5,9 @@ const {
   createUser,
   updateUser,
   login,
+  getMe,
 } = require("../../controllers/userControllers");
-
+const { loginRequired } = require("../../services/authenticationService");
 /* GET users listing. */
 // router.get("/", function (req, res, next) {
 //   res.send("respond with a resource");
@@ -14,8 +15,8 @@ const {
 
 router.route("/users").get(getUserList).post(createUser);
 
-router.route("users/:id").put(updateUser);
-
+router.post("/me", loginRequired, getMe);
+router.route("/users/:id").put(updateUser);
 router.route("/login").post(login);
 
 //router.route("/login/Facebook").post(loginWithFacebook);
