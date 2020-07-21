@@ -40,6 +40,14 @@ exports.readBook = async (req, res) => {
   });
 };
 
+exports.readSingleBook = async (req, res) => {
+  const book = await Book.findById(req.params.idbook);
+  return res.status(200).json({
+    status: "ok",
+    data: book,
+  });
+};
+
 exports.updateBook = async (req, res) => {
   const idbook = req.params.idbook;
   const book = await Book.findById({ _id: idbook });

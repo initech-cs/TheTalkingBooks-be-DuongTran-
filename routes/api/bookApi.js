@@ -4,6 +4,7 @@ const {
   createBook,
   readBook,
   updateBook,
+  readSingleBook,
 } = require("../../controllers/bookControllers");
 
 const {
@@ -17,5 +18,8 @@ router.get("/", readBook);
 /* POST Create new books. */
 // router.post("/", createBook);
 router.route("/").post(loginRequired, adminRequired, createBook);
-router.route("/books/:idbook").put(loginRequired, adminRequired, updateBook);
+router
+  .route("/books/:idbook")
+  .get(readSingleBook)
+  .put(loginRequired, adminRequired, updateBook);
 module.exports = router;
