@@ -14,7 +14,7 @@ exports.createBook = async function (req, res) {
     image,
     averageRating,
   } = req.body;
-
+  // console.log("ok");
   const genreArray = await Genre.generateTags(genres);
 
   const book = new Book({
@@ -26,7 +26,7 @@ exports.createBook = async function (req, res) {
     pageCount,
     description: description,
     image: image,
-    averageRating: averageRating
+    averageRating: averageRating,
   });
   await book.save();
   return res.json({ status: "ok", data: book });
@@ -37,5 +37,19 @@ exports.readBook = async (req, res) => {
   return res.status(200).json({
     status: "ok",
     data: books,
+  });
+};
+
+exports.updateBook = async (req, res) => {
+  const idbook = req.params.idbook;
+  const book = await Book.findById({ _id: idbook });
+  const newAudioUrl = req.body.audioUrl;
+  if (newAudioUrl) {
+    book.audioUrl = newAudioUrl;
+  }
+  await book.save();
+  return res.status(200).json({
+    status: "ok",
+    data: book,
   });
 };

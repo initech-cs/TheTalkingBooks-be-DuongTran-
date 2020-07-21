@@ -36,13 +36,14 @@ exports.loginRequired = async (req, res, next) => {
   }
 };
 
-exports.adminRequired = async () => {
-  const email = res.body.email;
-  const user = await User.findOne({ email: email });
-  if (user.role != "admin") {
+exports.adminRequired = async (req, res, next) => {
+  //   const email = req.user.email;
+  //   const user = await User.findOne({ email: email });
+  //   console.log(req.user);
+  if (req.user.role != "host") {
     return res.status(400).json({
       status: "fail",
-      message: "not admin",
+      message: "not host",
     });
   }
   next();

@@ -1,6 +1,10 @@
 var express = require("express");
 var router = express.Router();
-const { createBook, readBook } = require("../../controllers/bookControllers");
+const {
+  createBook,
+  readBook,
+  updateBook,
+} = require("../../controllers/bookControllers");
 
 const {
   loginRequired,
@@ -12,5 +16,6 @@ router.get("/", readBook);
 
 /* POST Create new books. */
 // router.post("/", createBook);
-router.route("/books").post(loginRequired, adminRequired, createBook);
+router.route("/").post(loginRequired, adminRequired, createBook);
+router.route("/books/:idbook").put(loginRequired, adminRequired, updateBook);
 module.exports = router;

@@ -16,6 +16,7 @@ const schema = mongoose.Schema({
   averageRating: Number,
   description: String,
   image: String,
+  audioUrl: String,
 });
 
 // schema.pre("save", async function (next) {
