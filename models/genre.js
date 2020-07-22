@@ -11,7 +11,7 @@ const genreSchema = mongoose.Schema({
 
 genreSchema.statics.generateTags = async function (tags) {
   if (!tags) return Promise.resolve([]);
-  const ltags = tags.map((e) => e.toLowerCase().trim()); // trim and lowerCase all strings
+  const ltags = tags.map((e) => e.toLowerCase().trim()); // trim and lowerCase all string
   const tagIDs = ltags.map(async (e) => {
     let tag = await this.findOne({ genre: e });
     // check if tag exists, return tag document
